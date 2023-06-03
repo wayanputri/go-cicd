@@ -27,16 +27,3 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/be-images:latest
-      - name: Connect to server using SSH
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
-          port: ${{ secrets.PORT }}
-          script: |
-            docker stop beapiContainer
-            docker rm beapiContainer
-            docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/be-images
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/be-images
-            docker run -d -p 80:80 -e JWT_KEY=${{ secrets.JWT_KEY }} -e DBUSER=${{ secrets.DBUSER }} -e DBPASS=${{ secrets.DBPASS }} -e DBHOST=${{ secrets.DBHOST }} -e DBPORT=${{ secrets.DBPORT }} -e DBNAME=${{ secrets.DBNAME }} --name beapiContainer ${{ secrets.DOCKERHUB_USERNAME }}/be-images:latest
