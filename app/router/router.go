@@ -5,6 +5,7 @@ import (
 	_userData "be17/main/feature/user/data"
 	_userHandler "be17/main/feature/user/handler"
 	_userServis "be17/main/feature/user/service"
+	"net/http"
 
 	_projectData "be17/main/feature/project/data"
 	_projectHandler "be17/main/feature/project/handler"
@@ -44,5 +45,11 @@ func InitRouter(db *gorm.DB,e *echo.Echo){
 	e.POST("/tasks",taskHandlerAPI.Create,middlewares.JWTMiddleware())
 	e.DELETE("/tasks/:taskid",taskHandlerAPI.Delete,middlewares.JWTMiddleware())
 	e.PUT("/tasks/:taskid",taskHandlerAPI.Update,middlewares.JWTMiddleware())
+
+	e.GET("/hello",func(c echo.Context)error{
+		return c.JSON(http.StatusOK,map[string]any{
+			"message":"hello word",
+		})
+	})
 	
 }
